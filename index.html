@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Navikshaa CRM - Schedulo Lite</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #fff;
+      color: #222;
+    }
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 40px;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .navbar .logo {
+      font-size: 1.5rem;
+      color: #3578e5;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+    .navbar nav {
+      display: flex;
+      gap: 28px;
+      align-items: center;
+    }
+    .navbar nav a {
+      text-decoration: none;
+      color: #222;
+      font-weight: 500;
+      font-size: 1rem;
+      transition: color 0.2s;
+    }
+    .navbar nav a:hover {
+      color: #3578e5;
+    }
+    .navbar .actions {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+    }
+    .navbar .actions a {
+      color:#3578e5;
+      text-decoration:none;
+      font-weight:500;
+    }
+    .navbar .actions button {
+      background: #3578e5;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 22px;
+      font-size: 1rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+    .navbar .actions button:hover {
+      background: #245bb2;
+    }
+    .hero-section {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 60px 8vw 40px 8vw;
+      background: #f8faff;
+      min-height: 480px;
+      gap: 40px;
+    }
+    .hero-content {
+      flex: 1;
+      max-width: 540px;
+    }
+    .hero-content h1 {
+      font-size: 2.8rem;
+      color: #3578e5;
+      margin-bottom: 18px;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+    .hero-content p {
+      font-size: 1.18rem;
+      color: #444;
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+    .hero-content .cta-btn {
+      background: #3578e5;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 12px 32px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(53,120,229,0.08);
+      transition: background 0.2s;
+    }
+    .hero-content .cta-btn:hover {
+      background: #245bb2;
+    }
+    .hero-image {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .hero-image img {
+      max-width: 420px;
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(53,120,229,0.10);
+      object-fit: cover;
+    }
+    @media (max-width: 900px) {
+      .hero-section {
+        flex-direction: column;
+        padding: 40px 4vw;
+        gap: 24px;
+      }
+      .hero-content, .hero-image {
+        max-width: 100%;
+      }
+      .hero-image img {
+        max-width: 100%;
+      }
+    }
+    /* Modal styles */
+    .modal {
+      position: fixed;
+      z-index: 1000;
+      left: 0; top: 0; width: 100%; height: 100%;
+      overflow: auto; background: rgba(0,0,0,0.4);
+      display: none; align-items: center; justify-content: center;
+    }
+    .modal.show { display: flex; }
+    .modal-content {
+      background: #fff; padding: 24px 24px 18px 24px; border-radius: 10px; width: 400px; position: relative;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.13);
+      animation: fadeIn 0.2s;
+    }
+    @keyframes fadeIn {
+      from { transform: translateY(40px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .close {
+      position: absolute; right: 14px; top: 10px; font-size: 26px; cursor: pointer; color: #888;
+      transition: color 0.2s;
+    }
+    .close:hover { color: #3578e5; }
+    .schedulo-title {
+      text-align: center;
+      color: #3578e5;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+    .slots-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .slot-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .slot-time {
+      min-width: 100px;
+      font-weight: 500;
+    }
+    .slot-status {
+      flex: 1;
+      margin-left: 10px;
+      font-size: 1rem;
+    }
+    .slot-status.available {
+      color: #1a8a1a;
+    }
+    .slot-status.booked {
+      color: #d32f2f;
+    }
+    .slot-actions {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .slot-actions input[type="text"] {
+      width: 110px;
+      padding: 5px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+    .slot-actions button {
+      background: #3578e5;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 6px 14px;
+      font-size: 1rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+    .slot-actions button.cancel {
+      background: #d32f2f;
+    }
+    .slot-actions button.cancel:hover {
+      background: #a31515;
+    }
+    .slot-actions button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    .modal-footer {
+      text-align: right;
+      margin-top: 18px;
+    }
+    .modal-footer button {
+      background: #3578e5;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 7px 18px;
+      font-size: 1rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+    .modal-footer button:hover {
+      background: #245bb2;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <div class="navbar">
+    <div class="logo">Navikshaa</div>
+    <nav>
+      <a href="#">Services</a>
+      <a href="#">Customers</a>
+      <a href="#">Support</a>
+      <a href="#">Company</a>
+      <a href="#">Career</a>
+    </nav>
+    <div class="actions">
+      <a href="#">Login</a>
+      <button id="book-demo-navbar">Book a Demo</button>
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1>Empowering Businesses with CRM</h1>
+      <p>
+        Navikshaa Customer Relationship Management (CRM) software offers an all-in-one solution with advanced features like omnichannel communication, intuitive pipeline management, and powerful automation.
+      </p>
+      <button class="cta-btn" id="book-demo-hero">Book a Demo</button>
+    </div>
+    <div class="hero-image">
+      <img src="https://th.bing.com/th/id/OIP.kGU15XFL7oUrrUb9SK5T0QHaE8?w=274&h=183&c=7&r=0&o=5&pid=1.7" alt="CRM Illustration">
+    </div>
+  </section>
+
+  <!-- Schedulo Lite Modal -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span id="close-modal" class="close">&times;</span>
+      <div class="schedulo-title">Schedulo Lite</div>
+      <ul class="slots-list" id="slots-list"></ul>
+      <div class="modal-footer">
+        <button id="close-modal-footer">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- CONFIGURABLE SLOTS ---
+    const slots = [
+      "10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM",
+      "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM"
+    ];
+
+    // --- DOM ELEMENTS ---
+    const modal = document.getElementById('modal');
+    const closeModal = document.getElementById('close-modal');
+    const closeModalFooter = document.getElementById('close-modal-footer');
+    const bookDemoHero = document.getElementById('book-demo-hero');
+    const bookDemoNavbar = document.getElementById('book-demo-navbar');
+    const slotsList = document.getElementById('slots-list');
+
+    // --- STATE ---
+    let appointments = []; // { time: "10:00 AM", name: "John" }
+
+    // --- MODAL HANDLING ---
+    function openModal() {
+      modal.classList.add('show');
+      fetchAppointments();
+    }
+    function hideModal() {
+      modal.classList.remove('show');
+    }
+    closeModal.onclick = hideModal;
+    closeModalFooter.onclick = hideModal;
+    window.onclick = (e) => {
+      if (e.target === modal) hideModal();
+    };
+    bookDemoHero.onclick = openModal;
+    bookDemoNavbar.onclick = openModal;
+
+    // --- RENDER SLOTS ---
+    function renderSlots() {
+      slotsList.innerHTML = '';
+      slots.forEach(slot => {
+        const appointment = appointments.find(a => a.time === slot);
+        const li = document.createElement('li');
+        li.className = 'slot-row';
+
+        // Time
+        const timeDiv = document.createElement('div');
+        timeDiv.className = 'slot-time';
+        timeDiv.textContent = slot;
+
+        // Status
+        const statusDiv = document.createElement('div');
+        statusDiv.className = 'slot-status ' + (appointment ? 'booked' : 'available');
+        statusDiv.textContent = appointment
+          ? `Booked by ${appointment.name}`
+          : 'Available';
+
+        // Actions
+        const actionsDiv = document.createElement('div');
+        actionsDiv.className = 'slot-actions';
+
+        if (!appointment) {
+          // Input + Book button
+          const input = document.createElement('input');
+          input.type = 'text';
+          input.placeholder = 'Your name';
+          input.maxLength = 32;
+          input.autocomplete = 'off';
+
+          const bookBtn = document.createElement('button');
+          bookBtn.textContent = 'Book';
+          bookBtn.onclick = () => {
+            if (input.value.trim()) {
+              bookSlot(slot, input.value.trim());
+            } else {
+              input.focus();
+            }
+          };
+          actionsDiv.appendChild(input);
+          actionsDiv.appendChild(bookBtn);
+        } else {
+          // Cancel button
+          const cancelBtn = document.createElement('button');
+          cancelBtn.textContent = 'Cancel';
+          cancelBtn.className = 'cancel';
+          cancelBtn.onclick = () => cancelSlot(slot);
+          actionsDiv.appendChild(cancelBtn);
+        }
+
+        li.appendChild(timeDiv);
+        li.appendChild(statusDiv);
+        li.appendChild(actionsDiv);
+        slotsList.appendChild(li);
+      });
+    }
+
+    // --- BACKEND INTEGRATION ---
+    function fetchAppointments() {
+      fetch('/api/appointments')
+        .then(res => res.ok ? res.json() : [])
+        .then(data => {
+          appointments = Array.isArray(data) ? data : [];
+          renderSlots();
+        })
+        .catch(() => {
+          appointments = [];
+          renderSlots();
+        });
+    }
+    function bookSlot(time, name) {
+      fetch('/api/appointments', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ time, name })
+      })
+      .then(res => res.ok ? res.json() : Promise.reject())
+      .then(() => fetchAppointments())
+      .catch(() => alert('Failed to book slot.'));
+    }
+    function cancelSlot(time) {
+      fetch(`/api/appointments/${encodeURIComponent(time)}`, {
+        method: 'DELETE'
+      })
+      .then(res => res.ok ? res.json() : Promise.reject())
+      .then(() => fetchAppointments())
+      .catch(() => alert('Failed to cancel slot.'));
+    }
+  </script>
+</body>
+</html>

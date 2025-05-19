@@ -1,0 +1,80 @@
+
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background: #f4f4f4;
+}
+.container {
+  max-width: 600px;
+  margin: auto;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+}
+.slot {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+.available {
+  color: green;
+}
+.booked {
+  color: red;
+}
+button {
+  margin-left: 10px;
+}
+h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 24px;
+}
+
+label {
+  font-weight: bold;
+  margin-right: 8px;
+}
+
+input[type="text"], input[type="email"], input[type="time"] {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+form {
+  margin-bottom: 24px;
+}
+
+button {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+button:hover {
+  background: #0056b3;
+}
+
+.error {
+  color: #d8000c;
+  background: #ffd2d2;
+  padding: 8px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+
+.success {
+  color: #4f8a10;
+  background: #dff2bf;
+  padding: 8px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
