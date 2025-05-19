@@ -1,0 +1,1 @@
+# schedulo-lite-smart-session-booking-mvp
