@@ -18,7 +18,6 @@
 - Homepage View  
 - Booking Modal View  
 
-> 📸 Add your screenshots in the repository or through GitHub and update this section accordingly.
 
 ## 🛠️ How to Use
 
@@ -43,5 +42,4 @@ Visit Navikshaa CRM *(replace with the actual link when available)*
 2. Upload your screenshots (e.g., `homepage.png`, `modal.png`) to the folder.  
 3. Reference them like this:  
 
-```markdown
-![Homepage](./assets/homepage.png)
+
